@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Preview</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css/github-markdown.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
+
+    <style>
+        body {
+            background-color: #0d1117;
+            margin: 0;
+        }
+
+        .markdown-body {
+            box-sizing: border-box;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 45px;
+            background: #0d1117;
+            color: #c9d1d9;
+        }
+
+        pre {
+            background-color: #161b22 !important;
+            padding: 16px;
+            border-radius: 6px;
+            overflow: auto;
+        }
+
+        code {
+            background-color: #161b22;
+            padding: 2px 6px;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div id="content" class="markdown-body"></div>
+    <script>
+        const params = new URLSearchParams(window.location.search)
+        const url = params.get("url")
+
+        let markdown;
+
+        function resolveUrl(input) {
+            if (!input) return null;
+
+            try {
+                new URL(input);
+                return input; 
+            } catch (e) {}
+
+            const parts = input.split("/");
+
+            if (parts.length >= 4) {
+                const [user, repo, branch, ...fileParts] = parts;
+                const file = fileParts.join("/");
+
+                return `https://raw.githubusercontent.com/${user}/${repo}/${branch}/${file}`;
+            }
+
+            // 3. Sinon invalide
+            return null;
+        }
+
+        const input = url || 'frenchcast1234/frenchcast1234/main/README.md';
+        const finalUrl = resolveUrl(input);
+
+        if (!finalUrl) {
+            document.getElementById("content").innerText = "Invalid URL format";
+        } else {
+            fetch(finalUrl)
+                .then(response => response.text())
+                .then(data => {
+                    markdown = data;
+                    renderMarkdown();
+                })
+                .catch(error => {
+                    console.error('Error loading markdown:', error);
+                    document.getElementById("content").innerText = "Error loading file";
+                });
+        }
+
+        function renderMarkdown() {
+            const html = marked.parse(markdown);
+            const render = DOMPurify.sanitize(html);
+            document.getElementById("content").innerHTML = render;
+        }
+    </script>
+</body>
+</html>
