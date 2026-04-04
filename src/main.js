@@ -21,7 +21,7 @@ function resolveUrl(input) {
     }
 
     // 3. Sinon invalide
-    return null;
+    return 'https://raw.githubusercontent.com/frenchcast1234/markdown-preview/main/README.md';
 }
 
 const input = url || 'frenchcast1234/frenchcast1234/main/README.md';
