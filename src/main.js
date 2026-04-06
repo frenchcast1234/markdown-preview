@@ -2,7 +2,6 @@ const params = new URLSearchParams(window.location.search)
 const url = params.get("url")
 
 let markdown;
-// I added this comment for my Github Activity
 
 function resolveUrl(input) {
     if (!input) return null;
