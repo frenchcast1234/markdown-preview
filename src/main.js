@@ -2,7 +2,6 @@ const params = new URLSearchParams(window.location.search)
 const url = params.get("url")
 
 let markdown;
-// I added this comment for my Github acttivity
 
 function resolveUrl(input) {
     if (!input) return null;
@@ -27,6 +26,7 @@ function resolveUrl(input) {
 
 const input = url || 'frenchcast1234/frenchcast1234/main/README.md';
 const finalUrl = resolveUrl(input);
+console.log(finalUrl);
 
 if (!finalUrl) {
     document.getElementById("content").innerText = "Invalid URL format";
