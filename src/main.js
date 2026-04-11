@@ -3,6 +3,8 @@ const url = params.get("url")
 
 let markdown;
 
+// Github activity
+
 function resolveUrl(input) {
     if (!input) return null;
 
